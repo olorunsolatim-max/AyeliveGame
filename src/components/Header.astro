@@ -1,11 +1,7 @@
 ---
-const navLinks = [
-  { label: "Home", href: "/" },
-  { label: "Blog", href: "/blog" },
-  { label: "Tags", href: "/tags" },
-  { label: "About", href: "/about" },
-];
+import { SITE } from "@/config";
 
+const navLinks = SITE.nav;
 const currentPath = Astro.url.pathname;
 ---
 
