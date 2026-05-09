@@ -37,14 +37,13 @@ export default {
               fontSize: "2rem",
               marginBottom: "0.5em",
               color: theme("colors.gray.900"),
-            },
-            h2: {
+            },h2: {
               fontWeight: "700",
               fontSize: "1.5rem",
               marginTop: "2em",
               marginBottom: "0.75em",
               color: theme("colors.gray.900"),
-              borderBottom: `2px solid ${theme("colors.blue.500")}`,
+              borderBottom: `1px solid ${theme("colors.gray.200")}`,
               paddingBottom: "0.3em",
             },
             h3: {
