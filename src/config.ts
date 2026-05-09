@@ -4,7 +4,7 @@ export const SITE = {
   url: "https://isamueldev.vercel.app",
   description: "A fast, minimal tech blog built with Astro and Tailwind CSS.",
   author: "iSamuel",
-  email: "hello@isamueldev.com",
+  email: "revibyte20@gmail.com",
 
   nav: [
     { label: "Home", href: "/" },
