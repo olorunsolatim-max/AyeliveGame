@@ -16,7 +16,7 @@ const currentPath = Astro.url.pathname;
       MyBlog
     </a>
 
-    <!-- Nav -->
+    <!-- Desktop Nav -->
     <nav class="hidden sm:flex items-center gap-6">
       {navLinks.map(link => (
         <a
@@ -32,28 +32,146 @@ const currentPath = Astro.url.pathname;
       ))}
     </nav>
 
-    <!-- Dark mode toggle -->
-    <button
-      id="theme-toggle"
-      class="btn-ghost p-2 rounded-lg"
-      aria-label="Toggle dark mode"
-    >
-      <svg id="icon-moon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 hidden dark:block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707M17.657 17.657l-.707-.707M6.343 6.343l-.707-.707M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-      </svg>
-      <svg id="icon-sun" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 block dark:hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-      </svg>
-    </button>
+    <div class="flex items-center gap-2">
 
+      <!-- Search button -->
+      <button
+        id="search-toggle"
+        class="btn-ghost p-2 rounded-lg"
+        aria-label="Search"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z" />
+        </svg>
+      </button>
+
+      <!-- Dark mode toggle -->
+      <button
+        id="theme-toggle"
+        class="btn-ghost p-2 rounded-lg"
+        aria-label="Toggle dark mode"
+      >
+        <svg id="icon-moon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 hidden dark:block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707M17.657 17.657l-.707-.707M6.343 6.343l-.707-.707M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <svg id="icon-sun" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 block dark:hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+        </svg>
+      </button>
+
+      <!-- Hamburger (mobile only) -->
+      <button
+        id="menu-toggle"
+        class="sm:hidden btn-ghost p-2 rounded-lg"
+        aria-label="Toggle menu"
+      >
+        <svg id="icon-menu" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+        <svg id="icon-close" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+
+    </div>
   </div>
+
+  <!-- Search Bar (hidden by default) -->
+  <div id="search-bar" class="hidden border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950">
+    <div class="container py-3">
+      <input
+        id="search-input"
+        type="text"
+        placeholder="Search posts..."
+        class="w-full px-4 py-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-sm text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-accent-500"
+      />
+      <div id="search-results" class="mt-2 space-y-1"></div>
+    </div>
+  </div>
+
+  <!-- Mobile Menu (hidden by default) -->
+  <div id="mobile-menu" class="hidden sm:hidden border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950">
+    <nav class="container py-4 flex flex-col gap-3">
+      {navLinks.map(link => (
+        <a
+          href={link.href}
+          class={`text-sm font-medium px-2 py-1.5 rounded-lg transition-colors ${
+            currentPath === link.href
+              ? "text-accent-500 bg-accent-50 dark:bg-accent-900/20"
+              : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800"
+          }`}
+        >
+          {link.label}
+        </a>
+      ))}
+    </nav>
+  </div>
+
 </header>
 
 <script>
-  const toggle = document.getElementById("theme-toggle");
-  toggle?.addEventListener("click", () => {
+  // Dark mode
+  const themeToggle = document.getElementById("theme-toggle");
+  themeToggle?.addEventListener("click", () => {
     const html = document.documentElement;
     html.classList.toggle("dark");
     localStorage.setItem("theme", html.classList.contains("dark") ? "dark" : "light");
+  });
+
+  // Mobile menu
+  const menuToggle = document.getElementById("menu-toggle");
+  const mobileMenu = document.getElementById("mobile-menu");
+  const iconMenu = document.getElementById("icon-menu");
+  const iconClose = document.getElementById("icon-close");
+
+  menuToggle?.addEventListener("click", () => {
+    mobileMenu?.classList.toggle("hidden");
+    iconMenu?.classList.toggle("hidden");
+    iconClose?.classList.toggle("hidden");
+  });
+
+  // Search toggle
+  const searchToggle = document.getElementById("search-toggle");
+  const searchBar = document.getElementById("search-bar");
+  const searchInput = document.getElementById("search-input") as HTMLInputElement;
+
+  searchToggle?.addEventListener("click", () => {
+    searchBar?.classList.toggle("hidden");
+    if (!searchBar?.classList.contains("hidden")) {
+      searchInput?.focus();
+    }
+  });
+
+  // Search logic
+  searchInput?.addEventListener("input", async () => {
+    const query = searchInput.value.toLowerCase().trim();
+    const resultsEl = document.getElementById("search-results");
+    if (!resultsEl) return;
+
+    if (!query) {
+      resultsEl.innerHTML = "";
+      return;
+    }
+
+    // Fetch search index
+    const res = await fetch("/search-index.json");
+    const posts: { title: string; description: string; slug: string }[] = await res.json();
+
+    const matches = posts.filter(p =>
+      p.title.toLowerCase().includes(query) ||
+      p.description.toLowerCase().includes(query)
+    );
+
+    if (matches.length === 0) {
+      resultsEl.innerHTML = `<p class="text-sm text-gray-400 px-2">No results found.</p>`;
+      return;
+    }
+
+    resultsEl.innerHTML = matches.map(p => `
+      <a href="/blog/${p.slug}" class="block px-3 py-2 rounded-lg text-sm hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+        <span class="font-medium text-gray-900 dark:text-gray-100">${p.title}</span>
+        <span class="block text-xs text-gray-400 mt-0.5">${p.description}</span>
+      </a>
+    `).join("");
   });
 </script>
