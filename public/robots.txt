@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://isamueldev.vercel.app/sitemap.xml
+Sitemap: https://isamueldev.vercel.app/sitemap-index.xml
