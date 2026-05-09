@@ -1,0 +1,86 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import Header from "@components/Header.astro";
+import Footer from "@components/Footer.astro";
+import { getCollection, getEntry } from "astro:content";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("blog", ({ data }) => !data.draft);
+  return posts.map(post => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+
+const formattedDate = new Intl.DateTimeFormat("en-US", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+}).format(post.data.date);
+---
+
+<BaseLayout
+  title={post.data.title}
+  description={post.data.description}
+  image={post.data.cover}
+>
+  <Header slot="header" />
+
+  <article class="max-w-2xl mx-auto">
+
+    <!-- Back link -->
+    <a
+      href="/blog"
+      class="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-accent-500 transition-colors mb-8"
+    >
+      ← Back to Blog
+    </a>
+
+    <!-- Tags -->
+    {post.data.tags.length > 0 && (
+      <div class="flex flex-wrap gap-2 mb-4">
+        {post.data.tags.map(tag => (
+          <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-accent-100 dark:bg-accent-900/30 text-accent-600 dark:text-accent-400">
+            {tag}
+          </span>
+        ))}
+      </div>
+    )}
+
+    <!-- Title -->
+    <h1 class="text-3xl font-bold leading-tight mb-4">
+      {post.data.title}
+    </h1>
+
+    <!-- Meta -->
+    <div class="flex items-center gap-3 text-sm text-gray-500 dark:text-gray-400 mb-8 pb-8 border-b border-gray-200 dark:border-gray-800">
+      <span>{post.data.author}</span>
+      <span>·</span>
+      <time datetime={post.data.date.toISOString()}>
+        {formattedDate}
+      </time>
+    </div>
+
+    <!-- Cover Image -->
+    {post.data.cover && (
+      <img
+        src={post.data.cover}
+        alt={post.data.title}
+        class="w-full rounded-xl mb-8 object-cover max-h-96"
+        loading="eager"
+      />
+    )}
+
+    <!-- Post Content -->
+    <div class="prose prose-gray dark:prose-invert max-w-none">
+      <Content />
+    </div>
+
+  </article>
+
+  <Footer slot="footer" />
+
+</BaseLayout>
