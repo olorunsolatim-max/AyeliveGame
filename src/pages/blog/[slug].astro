@@ -92,6 +92,11 @@ const tocHeadings = headings.filter(h => h.depth === 2 || h.depth === 3);
       <span>{readingTime} min read</span>
     </div>
 
+    <!-- Share Bar (above cover) -->
+    <div class="py-4 mb-6 border-t border-b border-gray-200 dark:border-gray-800">
+      <ShareBar title={post.data.title} url={postUrl} />
+    </div>
+
     <!-- Cover Image -->
     {post.data.cover && (
       <img
@@ -126,11 +131,6 @@ const tocHeadings = headings.filter(h => h.depth === 2 || h.depth === 3);
     <!-- Post Content -->
     <div class="prose prose-gray dark:prose-invert max-w-none mb-12">
       <Content />
-    </div>
-
-    <!-- Share Bar -->
-    <div class="py-6 border-t border-b border-gray-200 dark:border-gray-800 mb-12">
-      <ShareBar title={post.data.title} url={postUrl} />
     </div>
 
     <!-- Related Posts -->
