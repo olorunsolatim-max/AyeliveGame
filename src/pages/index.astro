@@ -2,7 +2,6 @@
 import BaseLayout from "@layouts/BaseLayout.astro";
 import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
-import PostCard from "@components/PostCard.astro";
 import { getCollection } from "astro:content";
 
 const allPosts = await getCollection("blog", ({ data }) => !data.draft);
@@ -25,7 +24,6 @@ const recentPosts = sortedPosts.slice(1, 7);
         href={`/blog/${heroPost.slug}`}
         class="group block rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-800 hover:border-accent-500 transition-all duration-300 hover:shadow-xl hover:shadow-accent-500/10"
       >
-        <!-- Cover Image -->
         {heroPost.data.cover ? (
           <div class="relative w-full h-72 sm:h-96 overflow-hidden">
             <img
@@ -34,9 +32,7 @@ const recentPosts = sortedPosts.slice(1, 7);
               class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
               loading="eager"
             />
-            <!-- Gradient overlay -->
             <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-            <!-- Text over image -->
             <div class="absolute bottom-0 left-0 right-0 p-6">
               <div class="flex flex-wrap gap-2 mb-3">
                 {heroPost.data.tags.map(tag => (
@@ -89,7 +85,6 @@ const recentPosts = sortedPosts.slice(1, 7);
             href={`/blog/${post.slug}`}
             class="group flex gap-4 rounded-xl border border-gray-200 dark:border-gray-800 hover:border-accent-500 transition-all duration-300 p-3 hover:shadow-lg hover:shadow-accent-500/10"
           >
-            <!-- Small Cover -->
             {post.data.cover ? (
               <div class="w-24 h-24 sm:w-28 sm:h-28 flex-shrink-0 rounded-lg overflow-hidden">
                 <img
@@ -107,13 +102,16 @@ const recentPosts = sortedPosts.slice(1, 7);
               </div>
             )}
 
-            <!-- Text -->
             <div class="flex flex-col justify-between py-1 min-w-0">
               <div>
                 {post.data.tags.length > 0 && (
-                  <span class="text-xs font-medium text-accent-500 mb-1 block">
-                    {post.data.tags[0]}
-                  </span>
+                  <div class="flex flex-wrap gap-1 mb-1">
+                    {post.data.tags.slice(0, 2).map(tag => (
+                      <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-accent-100 dark:bg-accent-900/30 text-accent-600 dark:text-accent-400">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
                 )}
                 <h3 class="font-semibold text-sm leading-snug line-clamp-2 group-hover:text-accent-500 transition-colors">
                   {post.data.title}
@@ -132,13 +130,7 @@ const recentPosts = sortedPosts.slice(1, 7);
       </div>
     </section>
   )}
-<div class="flex flex-wrap gap-2 mb-3">
-  {heroPost.data.tags.map(tag => (
-    <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-accent-500/90 text-white">
-      {tag}
-    </span>
-  ))}
-</div>
+
   <!-- VIEW MORE -->
   <div class="text-center mb-12">
     <a
