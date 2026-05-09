@@ -1,9 +1,20 @@
 ---
+import { SITE } from "../config";
+
 const currentYear = new Date().getFullYear();
 
-const socials = [
-  { label: "Twitter", href: "https://x.com/ByteCascade1" },
-  { label: "GitHub", href: "https://github.com/bytecascade11/" },
+const quickLinks = [
+  { label: "Home", href: "/" },
+  { label: "Blog", href: "/blog" },
+  { label: "About", href: "/about" },
+  { label: "Contact", href: "/contact" },
+  { label: "RSS Feed", href: "/rss.xml" },
+];
+
+const legalLinks = [
+  { label: "Privacy Policy", href: "/privacy-policy" },
+  { label: "Terms & Conditions", href: "/terms" },
+  { label: "Disclaimer", href: "/disclaimer" },
 ];
 ---
 
@@ -13,21 +24,31 @@ const socials = [
 
       <!-- Brand -->
       <div>
-        <a href="/" class="font-bold text-lg text-accent-500">iSamueldev</a>
+        <a href="/" class="font-bold text-lg text-accent-500">{SITE.name}</a>
         <p class="text-sm text-gray-500 dark:text-gray-400 mt-2 leading-relaxed">
-          A fast, minimal tech blog built with Astro and Tailwind CSS.
+          {SITE.tagline}
         </p>
         <div class="flex items-center gap-4 mt-4">
-          {socials.map(s => (
+          {SITE.socials.twitter && (
             <a
-              href={s.href}
+              href={SITE.socials.twitter}
               target="_blank"
               rel="noopener noreferrer"
               class="text-sm text-gray-500 dark:text-gray-400 hover:text-accent-500 transition-colors"
             >
-              {s.label}
+              Twitter
             </a>
-          ))}
+          )}
+          {SITE.socials.github && (
+            <a
+              href={SITE.socials.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-sm text-gray-500 dark:text-gray-400 hover:text-accent-500 transition-colors"
+            >
+              GitHub
+            </a>
+          )}
         </div>
       </div>
 
@@ -37,13 +58,7 @@ const socials = [
           Quick Links
         </h3>
         <ul class="space-y-2">
-          {[
-            { label: "Home", href: "/" },
-            { label: "Blog", href: "/blog" },
-            { label: "About", href: "/about" },
-            { label: "Contact", href: "/contact" },
-            { label: "RSS Feed", href: "/rss.xml" },
-          ].map(link => (
+          {quickLinks.map(link => (
             <li>
               <a
                 href={link.href}
@@ -62,11 +77,7 @@ const socials = [
           Legal
         </h3>
         <ul class="space-y-2">
-          {[
-            { label: "Privacy Policy", href: "/privacy-policy" },
-            { label: "Terms & Conditions", href: "/terms" },
-            { label: "Disclaimer", href: "/disclaimer" },
-          ].map(link => (
+          {legalLinks.map(link => (
             <li>
               <a
                 href={link.href}
@@ -83,7 +94,7 @@ const socials = [
 
     <!-- Bottom bar -->
     <div class="pt-6 border-t border-gray-100 dark:border-gray-800 text-center text-xs text-gray-400">
-      © {currentYear} iSamueldev. Built with
+      © {currentYear} {SITE.name}. Built with
       <a href="https://astro.build" target="_blank" class="hover:text-accent-500 transition-colors">Astro</a>
       &
       <a href="https://tailwindcss.com" target="_blank" class="hover:text-accent-500 transition-colors">Tailwind CSS</a>.
