@@ -1,0 +1,77 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import Header from "@components/Header.astro";
+import Footer from "@components/Footer.astro";
+import PostCard from "@components/PostCard.astro";
+import { getCollection } from "astro:content";
+
+const allPosts = await getCollection("blog", ({ data }) => !data.draft);
+
+const sortedPosts = allPosts.sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+
+const featuredPost = sortedPosts.find(p => p.data.featured);
+const recentPosts = sortedPosts.filter(p => !p.data.featured).slice(0, 6);
+---
+
+<BaseLayout title="MyBlog — A Fast Tech Blog">
+
+  <Header slot="header" />
+
+  <!-- Hero / Featured Post -->
+  {featuredPost && (
+    <section class="mb-12">
+      <p class="text-xs font-semibold uppercase tracking-widest text-accent-500 mb-3">
+        Featured Post
+      </p>
+      <a href={`/blog/${featuredPost.slug}`} class="group block rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-800 hover:border-accent-500 transition-all duration-300 hover:shadow-xl hover:shadow-accent-500/10">
+        {featuredPost.data.cover && (
+          <img
+            src={featuredPost.data.cover}
+            alt={featuredPost.data.title}
+            class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
+            loading="eager"
+          />
+        )}
+        <div class="p-6">
+          <div class="flex flex-wrap gap-2 mb-3">
+            {featuredPost.data.tags.map(tag => (
+              <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-accent-100 dark:bg-accent-900/30 text-accent-600 dark:text-accent-400">
+                {tag}
+              </span>
+            ))}
+          </div>
+          <h1 class="text-2xl font-bold leading-snug group-hover:text-accent-500 transition-colors mb-2">
+            {featuredPost.data.title}
+          </h1>
+          <p class="text-gray-500 dark:text-gray-400 text-sm">
+            {featuredPost.data.description}
+          </p>
+        </div>
+      </a>
+    </section>
+  )}
+
+  <!-- Recent Posts Grid -->
+  <section>
+    <p class="text-xs font-semibold uppercase tracking-widest text-accent-500 mb-6">
+      Recent Posts
+    </p>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {recentPosts.map(post => (
+        <PostCard
+          title={post.data.title}
+          description={post.data.description}
+          slug={post.slug}
+          date={post.data.date}
+          tags={post.data.tags}
+          cover={post.data.cover}
+        />
+      ))}
+    </div>
+  </section>
+
+  <Footer slot="footer" />
+
+</BaseLayout>
