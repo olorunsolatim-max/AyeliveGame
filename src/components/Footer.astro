@@ -1,64 +1,91 @@
 ---
 const currentYear = new Date().getFullYear();
 
-const links = [
-  { label: "Home", href: "/" },
-  { label: "Blog", href: "/blog" },
-  { label: "About", href: "/about" },
-];
-
 const socials = [
-  { label: "Twitter", href: "https://twitter.com/yourusername" },
-  { label: "GitHub", href: "https://github.com/yourusername" },
+  { label: "Twitter", href: "https://x.com/ByteCascade1" },
+  { label: "GitHub", href: "https://github.com/bytecascade11/" },
 ];
 ---
 
 <footer class="border-t border-gray-200 dark:border-gray-800 mt-16">
   <div class="container py-10">
 
-    <div class="flex flex-col sm:flex-row items-center justify-between gap-6">
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 mb-10">
 
       <!-- Brand -->
-      <div class="text-center sm:text-left">
+      <div>
         <a href="/" class="font-bold text-lg text-accent-500">MyBlog</a>
-        <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
-          A fast, minimal tech blog built with Astro.
+        <p class="text-sm text-gray-500 dark:text-gray-400 mt-2 leading-relaxed">
+          A fast, minimal tech blog built with Astro and Tailwind CSS.
         </p>
+        <div class="flex items-center gap-4 mt-4">
+          {socials.map(s => (
+            <a
+              href={s.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-sm text-gray-500 dark:text-gray-400 hover:text-accent-500 transition-colors"
+            >
+              {s.label}
+            </a>
+          ))}
+        </div>
       </div>
 
-      <!-- Nav links -->
-      <nav class="flex items-center gap-4">
-        {links.map(link => (
-          <a
-            href={link.href}
-            class="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
-          >
-            {link.label}
-          </a>
-        ))}
-      </nav>
+      <!-- Quick Links -->
+      <div>
+        <h3 class="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-4">
+          Quick Links
+        </h3>
+        <ul class="space-y-2">
+          {[
+            { label: "Home", href: "/" },
+            { label: "Blog", href: "/blog" },
+            { label: "About", href: "/about" },
+            { label: "Contact", href: "/contact" },
+          ].map(link => (
+            <li>
+              <a
+                href={link.href}
+                class="text-sm text-gray-500 dark:text-gray-400 hover:text-accent-500 transition-colors"
+              >
+                {link.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
 
-      <!-- Socials -->
-      <div class="flex items-center gap-4">
-        {socials.map(s => (
-          <a
-            href={s.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="text-sm text-gray-500 dark:text-gray-400 hover:text-accent-500 transition-colors"
-          >
-            {s.label}
-          </a>
-        ))}
+      <!-- Legal -->
+      <div>
+        <h3 class="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-4">
+          Legal
+        </h3>
+        <ul class="space-y-2">
+          {[
+            { label: "Privacy Policy", href: "/privacy-policy" },
+            { label: "Terms & Conditions", href: "/terms" },
+            { label: "Disclaimer", href: "/disclaimer" },
+          ].map(link => (
+            <li>
+              <a
+                href={link.href}
+                class="text-sm text-gray-500 dark:text-gray-400 hover:text-accent-500 transition-colors"
+              >
+                {link.label}
+              </a>
+            </li>
+          ))}
+        </ul>
       </div>
 
     </div>
 
     <!-- Bottom bar -->
-    <div class="mt-8 pt-6 border-t border-gray-100 dark:border-gray-800 text-center text-xs text-gray-400">
+    <div class="pt-6 border-t border-gray-100 dark:border-gray-800 text-center text-xs text-gray-400">
       © {currentYear} iSamueldev. Built with
       <a href="https://astro.build" target="_blank" class="hover:text-accent-500 transition-colors">Astro</a>
-      & 
+      &
       <a href="https://tailwindcss.com" target="_blank" class="hover:text-accent-500 transition-colors">Tailwind CSS</a>.
     </div>
 
