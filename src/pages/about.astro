@@ -1,0 +1,42 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import Header from "@components/Header.astro";
+import Footer from "@components/Footer.astro";
+---
+
+<BaseLayout title="About — MyBlog">
+  <Header slot="header" />
+
+  <div class="max-w-2xl mx-auto">
+    <h1 class="text-3xl font-bold mb-6">About</h1>
+
+    <div class="prose prose-gray dark:prose-invert max-w-none">
+      <p>
+        Welcome to MyBlog — a fast, minimal tech blog built with Astro and Tailwind CSS.
+        This is a space for writing about technology, web development, and everything in between.
+      </p>
+
+      <h2>Who runs this?</h2>
+      <p>
+        This blog is written and maintained by a solo creator passionate about tech,
+        clean design, and sharing knowledge with the world.
+      </p>
+
+      <h2>What do we write about?</h2>
+      <ul>
+        <li>Tech news and opinions</li>
+        <li>Smartphone reviews and comparisons</li>
+        <li>Web development tips</li>
+        <li>Tools and productivity</li>
+      </ul>
+
+      <h2>Get in touch</h2>
+      <p>
+        Have a question or want to collaborate? 
+        <a href="/contact">Send us a message</a>.
+      </p>
+    </div>
+  </div>
+
+  <Footer slot="footer" />
+</BaseLayout>
