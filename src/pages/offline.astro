@@ -1,0 +1,26 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import Header from "@components/Header.astro";
+import Footer from "@components/Footer.astro";
+---
+
+<BaseLayout title="You're Offline — MyBlog">
+  <Header slot="header" />
+
+  <div class="flex flex-col items-center justify-center text-center py-24">
+    <div class="text-6xl mb-6">📡</div>
+    <h1 class="text-3xl font-bold mb-3">You're Offline</h1>
+    <p class="text-gray-500 dark:text-gray-400 max-w-md mb-8">
+      It looks like you lost your internet connection. 
+      Check your connection and try again.
+    </p>
+    <button
+      onclick="window.location.reload()"
+      class="btn-primary px-6 py-2.5 rounded-lg text-sm font-medium"
+    >
+      Try Again
+    </button>
+  </div>
+
+  <Footer slot="footer" />
+</BaseLayout>
