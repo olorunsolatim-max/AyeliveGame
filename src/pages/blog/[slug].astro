@@ -2,7 +2,9 @@
 import BaseLayout from "@layouts/BaseLayout.astro";
 import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
-import { getCollection, getEntry } from "astro:content";
+import ShareBar from "@components/ShareBar.astro";
+import BackToTop from "@components/BackToTop.astro";
+import { getCollection } from "astro:content";
 
 export async function getStaticPaths() {
   const posts = await getCollection("blog", ({ data }) => !data.draft);
@@ -13,13 +15,34 @@ export async function getStaticPaths() {
 }
 
 const { post } = Astro.props;
-const { Content } = await post.render();
+const { Content, headings } = await post.render();
+
+const allPosts = await getCollection("blog", ({ data }) => !data.draft);
+
+// Reading time
+const wordsPerMinute = 200;
+const wordCount = post.body.split(/\s+/).length;
+const readingTime = Math.ceil(wordCount / wordsPerMinute);
+
+// Related posts by shared tags
+const relatedPosts = allPosts
+  .filter(p =>
+    p.slug !== post.slug &&
+    p.data.tags.some(tag => post.data.tags.includes(tag))
+  )
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
 
 const formattedDate = new Intl.DateTimeFormat("en-US", {
   year: "numeric",
   month: "long",
   day: "numeric",
 }).format(post.data.date);
+
+const postUrl = new URL(`/blog/${post.slug}`, Astro.site).toString();
+
+// TOC — only h2 and h3
+const tocHeadings = headings.filter(h => h.depth === 2 || h.depth === 3);
 ---
 
 <BaseLayout
@@ -29,7 +52,7 @@ const formattedDate = new Intl.DateTimeFormat("en-US", {
 >
   <Header slot="header" />
 
-  <article class="max-w-2xl mx-auto text-gray-900 dark:text-gray-100">
+  <div class="max-w-2xl mx-auto">
 
     <!-- Back link -->
     <a
@@ -43,9 +66,12 @@ const formattedDate = new Intl.DateTimeFormat("en-US", {
     {post.data.tags.length > 0 && (
       <div class="flex flex-wrap gap-2 mb-4">
         {post.data.tags.map(tag => (
-          <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-accent-100 dark:bg-accent-900/30 text-accent-600 dark:text-accent-400">
-            {tag}
-          </span>
+          <a
+            href={`/tags/${tag}`}
+            class="text-xs font-medium px-2 py-0.5 rounded-full bg-accent-100 dark:bg-accent-900/30 text-accent-600 dark:text-accent-400 hover:bg-accent-200 transition-colors"
+          >
+            #{tag}
+          </a>
         ))}
       </div>
     )}
@@ -62,6 +88,8 @@ const formattedDate = new Intl.DateTimeFormat("en-US", {
       <time datetime={post.data.date.toISOString()}>
         {formattedDate}
       </time>
+      <span>·</span>
+      <span>{readingTime} min read</span>
     </div>
 
     <!-- Cover Image -->
@@ -74,13 +102,86 @@ const formattedDate = new Intl.DateTimeFormat("en-US", {
       />
     )}
 
+    <!-- Table of Contents -->
+    {tocHeadings.length > 2 && (
+      <div class="mb-8 p-5 rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900">
+        <h2 class="text-sm font-semibold uppercase tracking-widest text-accent-500 mb-4">
+          Table of Contents
+        </h2>
+        <ul class="space-y-2">
+          {tocHeadings.map(heading => (
+            <li class={heading.depth === 3 ? "ml-4" : ""}>
+              <a
+                href={`#${heading.slug}`}
+                class="text-sm text-gray-600 dark:text-gray-400 hover:text-accent-500 transition-colors"
+              >
+                {heading.text}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )}
+
     <!-- Post Content -->
-    <div class="prose prose-gray dark:prose-invert max-w-none">
+    <div class="prose prose-gray dark:prose-invert max-w-none mb-12">
       <Content />
     </div>
 
-  </article>
+    <!-- Share Bar -->
+    <div class="py-6 border-t border-b border-gray-200 dark:border-gray-800 mb-12">
+      <ShareBar title={post.data.title} url={postUrl} />
+    </div>
 
+    <!-- Related Posts -->
+    {relatedPosts.length > 0 && (
+      <div class="mb-12">
+        <h2 class="text-sm font-semibold uppercase tracking-widest text-accent-500 mb-6">
+          Related Posts
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          {relatedPosts.map(related => (
+            <a
+              href={`/blog/${related.slug}`}
+              class="group rounded-xl border border-gray-200 dark:border-gray-800 hover:border-accent-500 transition-all duration-300 overflow-hidden"
+            >
+              {related.data.cover ? (
+                <div class="h-32 overflow-hidden">
+                  <img
+                    src={related.data.cover}
+                    alt={related.data.title}
+                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    loading="lazy"
+                  />
+                </div>
+              ) : (
+                <div class="h-32 bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-gray-300 dark:text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                </div>
+              )}
+              <div class="p-3">
+                <h3 class="text-sm font-semibold line-clamp-2 group-hover:text-accent-500 transition-colors">
+                  {related.data.title}
+                </h3>
+                <time class="text-xs text-gray-400 mt-1 block">
+                  {new Intl.DateTimeFormat("en-US", {
+                    month: "short",
+                    day: "numeric",
+                    year: "numeric",
+                  }).format(related.data.date)}
+                </time>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    )}
+
+  </div>
+
+  <BackToTop />
   <Footer slot="footer" />
 
 </BaseLayout>
