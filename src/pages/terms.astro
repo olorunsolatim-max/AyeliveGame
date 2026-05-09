@@ -1,0 +1,54 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import Header from "@components/Header.astro";
+import Footer from "@components/Footer.astro";
+
+const lastUpdated = "January 1, 2025";
+---
+
+<BaseLayout title="Terms & Conditions — MyBlog">
+  <Header slot="header" />
+
+  <div class="max-w-2xl mx-auto">
+    <h1 class="text-3xl font-bold mb-2">Terms & Conditions</h1>
+    <p class="text-sm text-gray-400 mb-10">Last updated: {lastUpdated}</p>
+
+    <div class="prose prose-gray dark:prose-invert max-w-none">
+      <p>
+        By accessing and using this website, you agree to the following terms.
+        Please read them carefully before using the site.
+      </p>
+
+      <h2>Use of Content</h2>
+      <p>
+        All content on this blog is for informational purposes only.
+        You may not reproduce or redistribute content without permission.
+      </p>
+
+      <h2>Accuracy of Information</h2>
+      <p>
+        We strive to keep information accurate and up to date, but we make
+        no guarantees about the completeness or accuracy of any content.
+      </p>
+
+      <h2>External Links</h2>
+      <p>
+        This site may contain links to external websites. We are not responsible
+        for the content or privacy practices of those sites.
+      </p>
+
+      <h2>Changes to Terms</h2>
+      <p>
+        We reserve the right to update these terms at any time.
+        Continued use of the site constitutes acceptance of the updated terms.
+      </p>
+
+      <h2>Contact</h2>
+      <p>
+        Questions about these terms? <a href="/contact">Contact us</a>.
+      </p>
+    </div>
+  </div>
+
+  <Footer slot="footer" />
+</BaseLayout>
