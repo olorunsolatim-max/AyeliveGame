@@ -1,0 +1,66 @@
+---
+const currentYear = new Date().getFullYear();
+
+const links = [
+  { label: "Home", href: "/" },
+  { label: "Blog", href: "/blog" },
+  { label: "About", href: "/about" },
+];
+
+const socials = [
+  { label: "Twitter", href: "https://twitter.com/yourusername" },
+  { label: "GitHub", href: "https://github.com/yourusername" },
+];
+---
+
+<footer class="border-t border-gray-200 dark:border-gray-800 mt-16">
+  <div class="container py-10">
+
+    <div class="flex flex-col sm:flex-row items-center justify-between gap-6">
+
+      <!-- Brand -->
+      <div class="text-center sm:text-left">
+        <a href="/" class="font-bold text-lg text-accent-500">MyBlog</a>
+        <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+          A fast, minimal tech blog built with Astro.
+        </p>
+      </div>
+
+      <!-- Nav links -->
+      <nav class="flex items-center gap-4">
+        {links.map(link => (
+          <a
+            href={link.href}
+            class="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+          >
+            {link.label}
+          </a>
+        ))}
+      </nav>
+
+      <!-- Socials -->
+      <div class="flex items-center gap-4">
+        {socials.map(s => (
+          <a
+            href={s.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-sm text-gray-500 dark:text-gray-400 hover:text-accent-500 transition-colors"
+          >
+            {s.label}
+          </a>
+        ))}
+      </div>
+
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="mt-8 pt-6 border-t border-gray-100 dark:border-gray-800 text-center text-xs text-gray-400">
+      © {currentYear} MyBlog. Built with
+      <a href="https://astro.build" target="_blank" class="hover:text-accent-500 transition-colors">Astro</a>
+      & 
+      <a href="https://tailwindcss.com" target="_blank" class="hover:text-accent-500 transition-colors">Tailwind CSS</a>.
+    </div>
+
+  </div>
+</footer>
