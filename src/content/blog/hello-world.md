@@ -1,7 +1,7 @@
 ---
 title: "Hello World — My New Astro Blog"
 description: "This is the first post on my new Astro-powered blog. Fast, minimal, and built from scratch."
-date: 2024-01-01
+date: 2026-05-09
 tags: ["astro", "web dev", "blogging"]
 author: "iSamuel"
 featured: true
