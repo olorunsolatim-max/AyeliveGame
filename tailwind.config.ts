@@ -142,7 +142,7 @@ export default {
             h1: { color: theme("colors.gray.100") },
             h2: {
               color: theme("colors.gray.100"),
-              borderBottomColor: theme("colors.blue.500"),
+              borderBottomColor: theme("colors.gray.700"),
             },
             h3: { color: theme("colors.gray.100") },
             strong: { color: theme("colors.gray.100") },
