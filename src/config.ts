@@ -20,7 +20,7 @@ export const SITE = {
     instagram: "",
   },
 
-  ogImage: "/og-default.png",
+  ogImage: "/og-default.jpg",
   googleVerification: "",
 
   postsPerPage: 6,
