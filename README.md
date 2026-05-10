@@ -150,7 +150,7 @@ description: "A short description for SEO and previews."
 date: 2024-01-01
 tags: ["tag1", "tag2"]
 author: "Your Name"
-cover: "/images/your-cover.jpg"
+cover: "/assets/posts/your-cover.jpg"
 featured: false
 draft: false
 ---
@@ -185,7 +185,7 @@ Recommended for original images and optimized performance.
 Upload images to:
 
 ```txt
-public/images/
+public/assets/
 ```
 
 Then reference them like this:
