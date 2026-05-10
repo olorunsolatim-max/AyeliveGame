@@ -5,6 +5,7 @@ date: 2026-05-09
 tags: ["astro", "web dev", "blogging"]
 author: "iSamuel"
 featured: true
+cover: "/assets/images/my-post-cover.jpg"
 ---
 
 ## Welcome to my blog
