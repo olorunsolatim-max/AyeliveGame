@@ -65,7 +65,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
   </head>
   <body class="bg-white text-gray-900 dark:bg-gray-950 dark:text-gray-100 min-h-screen transition-colors duration-300">
     <slot name="header" />
-    <main class="container py-8 min-h-screen px-4 sm:px-6 lg:px-8">
+    <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 min-h-screen">
       <slot />
     </main>
     <slot name="footer" />
