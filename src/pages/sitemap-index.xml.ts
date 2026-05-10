@@ -1,7 +1,7 @@
 import type { APIRoute } from "astro";
 
-export const GET: APIRoute = async ({ site }) => {
-  const siteUrl = site?.toString().replace(/\/$/, "") ?? "";
+export const GET: APIRoute = async () => {
+  const siteUrl = "https://isamueldev.vercel.app";
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -13,7 +13,7 @@ export const GET: APIRoute = async ({ site }) => {
 
   return new Response(xml, {
     headers: {
-      "Content-Type": "application/xml",
+      "Content-Type": "application/xml; charset=utf-8",
     },
   });
 };
