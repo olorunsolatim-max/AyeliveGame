@@ -191,7 +191,7 @@ public/images/
 Then reference them like this:
 
 ```yaml
-cover: "/images/my-cover.jpg"
+cover: "/assets/posts/my-cover.jpg"
 ```
 
 ---
