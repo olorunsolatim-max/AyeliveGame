@@ -54,13 +54,65 @@ const tocHeadings = headings.filter(h => h.depth === 2 || h.depth === 3);
 
   <div class="max-w-2xl mx-auto">
 
-    <!-- Back link -->
-    <a
-      href="/blog/"
-      class="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-accent-500 transition-colors mb-8"
-    >
-      ← Back to Blog
-    </a>
+    <!-- Breadcrumbs -->
+    <nav aria-label="Breadcrumb" class="mb-8">
+      <ol class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 flex-wrap">
+        <li>
+          <a href="/" class="hover:text-accent-500 transition-colors">
+            Home
+          </a>
+        </li>
+        <li class="text-gray-300 dark:text-gray-600">/</li>
+        <li>
+          <a href="/blog/" class="hover:text-accent-500 transition-colors">
+            Blog
+          </a>
+        </li>
+        <li class="text-gray-300 dark:text-gray-600">/</li>
+        {post.data.tags.length > 0 && (
+          <>
+            <li>
+              <a
+                href={`/tags/${post.data.tags[0]}/`}
+                class="hover:text-accent-500 transition-colors"
+              >
+                {post.data.tags[0]}
+              </a>
+            </li>
+            <li class="text-gray-300 dark:text-gray-600">/</li>
+          </>
+        )}
+        <li class="text-gray-900 dark:text-gray-100 font-medium line-clamp-1 max-w-xs">
+          {post.data.title}
+        </li>
+      </ol>
+    </nav>
+
+    <!-- Breadcrumb JSON-LD -->
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": `${Astro.site}`
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Blog",
+          "item": `${Astro.site}blog/`
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": post.data.title,
+          "item": `${Astro.site}blog/${post.slug}/`
+        }
+      ]
+    })} />
 
     <!-- Tags -->
     {post.data.tags.length > 0 && (
