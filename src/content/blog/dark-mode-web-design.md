@@ -1,7 +1,7 @@
 ---
 title: "Dark Mode Web Design — How to Do It Right"
 description: "Dark mode is everywhere, but most implementations get it wrong. Here's how to build a dark mode that actually looks good and respects user preferences."
-date: "2026-05-10"
+date: 2026-05-10
 tags:
   - design
   - css
