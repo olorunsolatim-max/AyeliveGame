@@ -16,19 +16,21 @@ export async function getStaticPaths() {
 }
 
 const { post } = Astro.props;
-const { Content, headings } = await post.render();
+const { Content, headings, remarkPluginFrontmatter } = await post.render();
 
 const allPosts = await getCollection("blog", ({ data }) => !data.draft);
 
-// Reading time
-const wordsPerMinute = 200;
-const wordCount = post.body.split(/\s+/).length;
-const readingTime = Math.ceil(wordCount / wordsPerMinute);
+// Reading time — use remark plugin data if available, fallback to manual count
+const readingTime = remarkPluginFrontmatter?.readingTime ?? Math.ceil(
+  (post.body?.split(/\s+/)?.length ?? 0) / 200
+);
 
-// Related posts by shared tags
+// Related posts by shared tags (with fallback for empty tags)
 const relatedPosts = allPosts
   .filter(p =>
     p.slug !== post.slug &&
+    p.data.tags?.length > 0 &&
+    post.data.tags?.length > 0 &&
     p.data.tags.some(tag => post.data.tags.includes(tag))
   )
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
@@ -40,10 +42,16 @@ const formattedDate = new Intl.DateTimeFormat("en-US", {
   day: "numeric",
 }).format(post.data.date);
 
-const postUrl = new URL(`/blog/${post.slug}`, Astro.site).toString();
+const postUrl = new URL(`/blog/${post.slug}/`, Astro.site).toString();
 
 // TOC — only h2 and h3
 const tocHeadings = headings.filter(h => h.depth === 2 || h.depth === 3);
+
+// Safe slug for fragment identifiers
+const safeSlug = (text: string) => text
+  .toLowerCase()
+  .replace(/[^a-z0-9]+/g, '-')
+  .replace(/^-|-$/g, '');
 ---
 
 <BaseLayout
@@ -53,7 +61,7 @@ const tocHeadings = headings.filter(h => h.depth === 2 || h.depth === 3);
 >
   <Header slot="header" />
 
-  <div class="max-w-2xl mx-auto">
+  <article class="max-w-2xl mx-auto">
 
     <!-- Breadcrumbs -->
     <nav aria-label="Breadcrumb" class="mb-8">
@@ -70,7 +78,7 @@ const tocHeadings = headings.filter(h => h.depth === 2 || h.depth === 3);
           </a>
         </li>
         <li class="text-gray-300 dark:text-gray-600">/</li>
-        {post.data.tags.length > 0 && (
+        {post.data.tags?.[0] && (
           <>
             <li>
               <a
@@ -98,29 +106,35 @@ const tocHeadings = headings.filter(h => h.depth === 2 || h.depth === 3);
           "@type": "ListItem",
           "position": 1,
           "name": "Home",
-          "item": `${Astro.site}`
+          "item": Astro.site?.toString() ?? SITE.url
         },
         {
           "@type": "ListItem",
           "position": 2,
           "name": "Blog",
-          "item": `${Astro.site}blog/`
+          "item": new URL("blog/", Astro.site ?? SITE.url).toString()
         },
-        {
+        ...(post.data.tags?.[0] ? [{
           "@type": "ListItem",
           "position": 3,
+          "name": post.data.tags[0],
+          "item": new URL(`tags/${post.data.tags[0]}/`, Astro.site ?? SITE.url).toString()
+        }] : []),
+        {
+          "@type": "ListItem",
+          "position": post.data.tags?.[0] ? 4 : 3,
           "name": post.data.title,
-          "item": `${Astro.site}blog/${post.slug}/`
+          "item": postUrl
         }
       ]
     })} />
 
     <!-- Tags -->
-    {post.data.tags.length > 0 && (
+    {post.data.tags?.length > 0 && (
       <div class="flex flex-wrap gap-2 mb-4">
-        {post.data.tags.map(tag => (
+        {post.data.tags.map((tag, i) => (
           <a
-            href={`/tags/${tag}`}
+            href={`/tags/${tag}/`}
             class="text-xs font-medium px-2 py-0.5 rounded-full bg-accent-100 dark:bg-accent-900/30 text-accent-600 dark:text-accent-400 hover:bg-accent-200 transition-colors"
           >
             #{tag}
@@ -157,9 +171,12 @@ const tocHeadings = headings.filter(h => h.depth === 2 || h.depth === 3);
         alt={post.data.title}
         class="w-full rounded-xl mb-8 object-cover max-h-96"
         loading="eager"
+        width="1200"
+        height="630"
       />
     )}
-<!-- Article JSON-LD -->
+
+    <!-- Article JSON-LD -->
     <script type="application/ld+json" set:html={JSON.stringify({
       "@context": "https://schema.org",
       "@type": "BlogPosting",
@@ -168,32 +185,33 @@ const tocHeadings = headings.filter(h => h.depth === 2 || h.depth === 3);
       "image": post.data.cover
         ? (post.data.cover.startsWith("http")
             ? post.data.cover
-            : new URL(post.data.cover, Astro.site).toString())
-        : new URL(SITE.ogImage, Astro.site).toString(),
+            : new URL(post.data.cover, Astro.site ?? SITE.url).toString())
+        : new URL(SITE.ogImage, Astro.site ?? SITE.url).toString(),
       "author": {
         "@type": "Person",
         "name": post.data.author,
-        "url": Astro.site?.toString()
+        "url": Astro.site?.toString() ?? SITE.url
       },
       "publisher": {
         "@type": "Organization",
         "name": SITE.name,
-        "url": Astro.site?.toString()
+        "url": Astro.site?.toString() ?? SITE.url
       },
       "datePublished": post.data.date.toISOString(),
       "dateModified": post.data.updated
-        ? post.data.updated.toISOString()
+        ? new Date(post.data.updated).toISOString()
         : post.data.date.toISOString(),
       "mainEntityOfPage": {
         "@type": "WebPage",
         "@id": postUrl
       },
-      "keywords": post.data.tags.join(", "),
+      "keywords": post.data.tags?.join(", ") ?? "",
       "url": postUrl
     })} />
+
     <!-- Table of Contents -->
     {tocHeadings.length > 2 && (
-      <div class="mb-8 p-5 rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900">
+      <nav aria-label="Table of Contents" class="mb-8 p-5 rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900">
         <h2 class="text-sm font-semibold uppercase tracking-widest text-accent-500 mb-4">
           Table of Contents
         </h2>
@@ -209,7 +227,7 @@ const tocHeadings = headings.filter(h => h.depth === 2 || h.depth === 3);
             </li>
           ))}
         </ul>
-      </div>
+      </nav>
     )}
 
     <!-- Post Content -->
@@ -219,14 +237,14 @@ const tocHeadings = headings.filter(h => h.depth === 2 || h.depth === 3);
 
     <!-- Related Posts -->
     {relatedPosts.length > 0 && (
-      <div class="mb-12">
+      <aside class="mb-12">
         <h2 class="text-sm font-semibold uppercase tracking-widest text-accent-500 mb-6">
           Related Posts
         </h2>
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {relatedPosts.map(related => (
             <a
-              href={`/blog/${related.slug}`}
+              href={`/blog/${related.slug}/`}
               class="group rounded-xl border border-gray-200 dark:border-gray-800 hover:border-accent-500 transition-all duration-300 overflow-hidden"
             >
               {related.data.cover ? (
@@ -236,6 +254,8 @@ const tocHeadings = headings.filter(h => h.depth === 2 || h.depth === 3);
                     alt={related.data.title}
                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     loading="lazy"
+                    width="400"
+                    height="200"
                   />
                 </div>
               ) : (
@@ -260,10 +280,10 @@ const tocHeadings = headings.filter(h => h.depth === 2 || h.depth === 3);
             </a>
           ))}
         </div>
-      </div>
+      </aside>
     )}
 
-  </div>
+  </article>
 
   <BackToTop />
   <Footer slot="footer" />
