@@ -1,6 +1,15 @@
 import type { APIRoute } from "astro";
 import { getCollection } from "astro:content";
 
+function escapeXml(str: string): string {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&apos;");
+}
+
 export const GET: APIRoute = async () => {
   const siteUrl = "https://isamueldev.vercel.app";
 
@@ -20,8 +29,8 @@ ${postsWithImages.map(post => {
     <loc>${siteUrl}/blog/${post.slug}/</loc>
     <image:image>
       <image:loc>${imageUrl}</image:loc>
-      <image:title>${post.data.title.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")}</image:title>
-      <image:caption>${post.data.description.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")}</image:caption>
+      <image:title>${escapeXml(post.data.title)}</image:title>
+      <image:caption>${escapeXml(post.data.description)}</image:caption>
     </image:image>
   </url>`;
 }).join("\n")}
