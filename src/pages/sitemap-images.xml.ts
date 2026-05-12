@@ -1,14 +1,10 @@
 // src/pages/sitemap-images.xml.ts
-//
-// Google Image Sitemap — tells Google which post page owns each cover image.
-// This fixes the issue where clicking an image in Google Lens / Google Images
-// lands on the homepage instead of the actual post that contains the image.
-//
-// Reference: https://developers.google.com/search/docs/crawling-indexing/sitemaps/image-sitemaps
 
 import { getCollection } from "astro:content";
 import { SITE } from "../config";
+
 export const prerender = true;
+
 export async function GET() {
   const posts = await getCollection("blog", ({ data }) => !data.draft);
 
@@ -33,9 +29,9 @@ export async function GET() {
 
       return `
   <url>
-    <loc>${postUrl}</loc>
+    <loc>${escapeXml(postUrl)}</loc>
     <image:image>
-      <image:loc>${imageUrl}</image:loc>
+      <image:loc>${escapeXml(imageUrl)}</image:loc>
       <image:title>${escapeXml(imageTitle)}</image:title>
     </image:image>
   </url>`;
