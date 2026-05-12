@@ -12,4 +12,11 @@ export default defineConfig({
       wrap: true,
     },
   },
+  vite: {
+    resolve: {
+      alias: {
+        '@config': '/src/config.ts'
+      }
+    }
+  }
 });
