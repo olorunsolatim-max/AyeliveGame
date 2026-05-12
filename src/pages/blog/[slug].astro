@@ -176,9 +176,39 @@ const safeSlug = (text: string) => text
         height="630"
       />
     )}
-
+<!-- Article JSON-LD -->
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "headline": post.data.title,
+      "description": post.data.description,
+      "image": post.data.cover
+        ? (post.data.cover.startsWith("http")
+            ? post.data.cover
+            : new URL(post.data.cover, Astro.site ?? SITE.url).toString())
+        : new URL(SITE.ogImage, Astro.site ?? SITE.url).toString(),
+      "author": {
+        "@type": "Person",
+        "name": post.data.author,
+        "url": Astro.site?.toString() ?? SITE.url
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": SITE.name,
+        "url": Astro.site?.toString() ?? SITE.url
+      },
+      "datePublished": post.data.date.toISOString(),
+      "dateModified": post.data.updated
+        ? new Date(post.data.updated).toISOString()
+        : post.data.date.toISOString(),
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": postUrl
+      },
+      "keywords": post.data.tags?.join(", ") ?? "",
+      "url": postUrl
+    })} />
     
-
     <!-- Table of Contents -->
     {tocHeadings.length > 2 && (
       <nav aria-label="Table of Contents" class="mb-8 p-5 rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900">
