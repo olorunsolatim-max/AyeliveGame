@@ -1,5 +1,5 @@
 ---
-title: "Best Smartphones of 2024 - Our Top Picks Across Every Budget"
+title: "Best Smartphones of 2024 Our Top Picks Across Every Budget"
 description: "From flagship killers to budget champions, here are the best smartphones you can buy in 2024 across every price range."
 date: 2026-05-10
 tags: ["smartphones", "tech", "reviews"]
