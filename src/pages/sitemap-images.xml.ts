@@ -7,7 +7,10 @@ function escapeXml(str: string): string {
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
-    .replace(/'/g, "&apos;");
+    .replace(/'/g, "&apos;")
+    .replace(/—/g, "-")
+    .replace(/–/g, "-")
+    .replace(/[^\x09\x0A\x0D\x20-\x7E]/g, "");
 }
 
 export const GET: APIRoute = async () => {
