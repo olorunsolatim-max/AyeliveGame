@@ -2,7 +2,7 @@ import type { APIRoute } from "astro";
 import { getCollection } from "astro:content";
 
 export const GET: APIRoute = async () => {
-  const siteUrl = "https://isamueldev.vercel.app/";
+  const siteUrl = "https://isamueldev.vercel.app";
 
   const posts = await getCollection("blog", ({ data }) => !data.draft);
 
