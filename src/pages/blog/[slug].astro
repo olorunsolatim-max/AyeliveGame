@@ -6,6 +6,7 @@ import ShareBar from "@components/ShareBar.astro";
 import BackToTop from "@components/BackToTop.astro";
 import { getCollection } from "astro:content";
 import { SITE } from "../../config";
+import ProgressBar from "@components/ProgressBar.astro";
 
 export async function getStaticPaths() {
   const posts = await getCollection("blog", ({ data }) => !data.draft);
@@ -65,6 +66,7 @@ const tocHeadings = headings.filter(
   description={post.data.description}
   image={post.data.cover}
 >
+<ProgressBar />
   <Header slot="header" />
 
   <article class="max-w-2xl mx-auto">
