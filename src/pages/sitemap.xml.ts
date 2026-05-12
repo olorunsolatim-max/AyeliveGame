@@ -1,6 +1,6 @@
 import type { APIRoute } from "astro";
 import { getCollection } from "astro:content";
-
+export const prerender = true;
 export const GET: APIRoute = async ({ site }) => {
   const siteUrl = "https://isamueldev.vercel.app";
 
