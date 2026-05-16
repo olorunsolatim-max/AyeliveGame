@@ -257,4 +257,4 @@ MIT License — free to use for personal and commercial projects.
 
 ---
 
-Built with ❤️ by [iSamuel](https://github.com/bytecascade/)
+Built with ❤️ by [iSamuel](https://www.revibyte.blog/)
