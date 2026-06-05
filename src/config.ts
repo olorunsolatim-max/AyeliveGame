@@ -1,10 +1,10 @@
 export const SITE = {
-  name: "iSamuelDev",
-  tagline: "A fast, minimal tech blog built with Astro.",
-  url: "https://isamueldev.vercel.app",
-  description: "A fast, minimal tech blog built with Astro and Tailwind CSS.",
-  author: "iSamuel",
-  email: "revibyte20@gmail.com",
+  name: "AyeliveGame",
+  tagline: "A fast, minimal gaming blog built with Astro.",
+  url: "https://ayelive-game.vercel.app/",
+  description: "AyeliveGame is where mobile gaming comes alive — real-time updates, in-depth guides, and everything you need to stay ahead in your favorite games.",
+  author: "Ayelabowo",
+  email: "olorunsolatim@gmail.com",
 
   nav: [
     { label: "Home", href: "/" },
@@ -14,8 +14,8 @@ export const SITE = {
   ],
 
   socials: {
-    twitter: "https://x.com/ByteCascade1",
-    github: "https://github.com/bytecascade11/",
+    twitter: "",
+    github: "https://github.com/olorunsolatim-max/",
     whatsapp: "",
     instagram: "",
   },
