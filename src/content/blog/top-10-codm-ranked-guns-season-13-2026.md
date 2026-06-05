@@ -3,7 +3,7 @@ title: "Top 10 Guns Dominating CODM Ranked This Season (Season 13, 2026)"
 description: "A breakdown of the ten weapons consistently performing in Call of Duty Mobile ranked play during Season 13 — covering why each gun works, honest loadout caveats, and what the competitive community is actually running."  
 coverImage: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=1200&q=80"  
 coverImageAlt: "CODM ranked meta weapons Season 13"
-date: "2026-06-05"
+date: 2026-06-05
 author: Ayelabowo
 season: "Season 13 (2026)"
 disclaimer: "Weapon rankings reflect community consensus from high-rank lobbies as of Season 13. Attachment availability and balance change with each patch. Always verify attachment names in your in-game gunsmith before building."  
