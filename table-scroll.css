@@ -1,12 +1,6 @@
-/*
-  table-scroll.css
-  ─────────────────────────────────────────────────────────
-  Drop this into your global CSS (e.g. src/styles/global.css)
-  with: @import './table-scroll.css';
-  ─────────────────────────────────────────────────────────
-*/
+/* table-scroll.css */
 
-/* ── The WRAPPER scrolls, the table stays as a normal table ── */
+/* ── Outer wrapper: card shell only, NO overflow hidden ── */
 .table-fade-wrap {
   position: relative;
   margin: 1.75rem 0;
@@ -15,15 +9,17 @@
   box-shadow:
     0 1px 3px rgb(0 0 0 / 0.06),
     0 1px 2px rgb(0 0 0 / 0.04);
-  overflow: hidden;
+  /* NO overflow:hidden here — it kills the inner scroll */
 }
 
-/* The scroll happens HERE, not on the table */
+/* ── Inner div: THIS is the only thing that scrolls ── */
 .table-fade-wrap .table-scroll-inner {
   overflow-x: auto;
+  overflow-y: visible;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: thin;
   scrollbar-color: #cbd5e1 transparent;
+  border-radius: 0.75rem; /* clip corners here instead */
 }
 
 .table-fade-wrap .table-scroll-inner::-webkit-scrollbar {
@@ -40,12 +36,12 @@
   background-color: #94a3b8;
 }
 
-/* ── Table resets — back to normal table layout ── */
+/* ── Table: normal display, never overflows the page ── */
 .prose .table-fade-wrap table {
-  display: table;        /* NOT block — page won't shift */
-  width: 100%;
-  min-width: 540px;      /* triggers scroll on narrow screens */
-  overflow: visible;     /* wrapper handles overflow */
+  display: table;
+  width: max-content;   /* shrink to content width so scroll triggers correctly */
+  min-width: 100%;      /* but at least fill the container */
+  overflow: visible;
   border-radius: 0;
   border: none;
   box-shadow: none;
@@ -72,6 +68,7 @@
   background: linear-gradient(to left, white 20%, transparent);
   opacity: 0;
   transition: opacity 0.2s;
+  z-index: 2;
 }
 
 .table-fade-wrap.is-overflowing::after {
@@ -85,7 +82,6 @@
     0 1px 3px rgb(0 0 0 / 0.3),
     0 1px 2px rgb(0 0 0 / 0.2);
 }
-
 .dark .table-fade-wrap .table-scroll-inner {
   scrollbar-color: #374151 transparent;
 }
