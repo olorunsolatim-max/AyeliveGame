@@ -274,9 +274,24 @@ const tocHeadings = headings.filter(
     )}
 
     <!-- Content -->
-    <div class="prose prose-gray dark:prose-invert max-w-none mb-12">
-      <Content />
-    </div>
+<div class="prose prose-gray dark:prose-invert max-w-none mb-12">
+  <Content />
+</div>
+
+<!-- Wrap tables for scroll -->
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', function() {
+    const tables = document.querySelectorAll('.prose table');
+    tables.forEach(table => {
+      if (!table.parentElement.classList.contains('table-wrapper')) {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'table-wrapper';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    });
+  });
+</script>
 
     <!-- Related Posts -->
     {relatedPosts.length > 0 && (
