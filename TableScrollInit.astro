@@ -1,0 +1,36 @@
+---
+// TableScrollInit.astro
+// Add this once to your base layout, inside <body> before </body>
+// It wraps every .prose table in a fade-hint div automatically.
+---
+
+<script>
+  function initTableScroll() {
+    document.querySelectorAll<HTMLElement>(".prose table").forEach((table) => {
+      // Avoid double-wrapping
+      if (table.closest(".table-fade-wrap")) return;
+
+      const wrap = document.createElement("div");
+      wrap.className = "table-fade-wrap";
+      table.parentNode!.insertBefore(wrap, table);
+      wrap.appendChild(table);
+
+      const update = () => {
+        const overflowing = table.scrollWidth > table.clientWidth;
+        // Only show fade when not scrolled to the end
+        const atEnd = table.scrollLeft + table.clientWidth >= table.scrollWidth - 8;
+        wrap.classList.toggle("is-overflowing", overflowing && !atEnd);
+      };
+
+      table.addEventListener("scroll", update, { passive: true });
+      new ResizeObserver(update).observe(table);
+      update();
+    });
+  }
+
+  // Run on first load
+  initTableScroll();
+
+  // Re-run after Astro view transitions (if you use them)
+  document.addEventListener("astro:page-load", initTableScroll);
+</script>
