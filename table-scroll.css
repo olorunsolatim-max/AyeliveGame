@@ -3,93 +3,63 @@
   ─────────────────────────────────────────────────────────
   Drop this into your global CSS (e.g. src/styles/global.css)
   with: @import './table-scroll.css';
-
-  This auto-wraps every table inside .prose with a scroll
-  container — no changes to your Markdown or .astro files needed.
   ─────────────────────────────────────────────────────────
 */
 
-/* ── Scroll wrapper ── */
-.prose table,
-.prose-lg table,
-.prose-xl table {
-  /* Let the wrapper handle overflow; table itself stays full-width */
-  display: block;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-
-  /* Thin, subtle scrollbar */
-  scrollbar-width: thin;
-  scrollbar-color: #cbd5e1 transparent; /* slate-300 */
-}
-
-.prose table::-webkit-scrollbar {
-  height: 5px;
-}
-.prose table::-webkit-scrollbar-track {
-  background: transparent;
-}
-.prose table::-webkit-scrollbar-thumb {
-  background-color: #cbd5e1;
-  border-radius: 99px;
-}
-.prose table::-webkit-scrollbar-thumb:hover {
-  background-color: #94a3b8;
-}
-
-/* ── Card shell around each table ── */
-.prose :where(table):not(:where([class~="not-prose"] *)) {
+/* ── The WRAPPER scrolls, the table stays as a normal table ── */
+.table-fade-wrap {
+  position: relative;
+  margin: 1.75rem 0;
   border-radius: 0.75rem;
-  border: 1px solid #e5e7eb; /* gray-200 */
+  border: 1px solid #e5e7eb;
   box-shadow:
     0 1px 3px rgb(0 0 0 / 0.06),
     0 1px 2px rgb(0 0 0 / 0.04);
-  overflow: hidden; /* clip zebra stripes to rounded corners */
+  overflow: hidden;
 }
 
-/* Dark mode card shell */
-.dark .prose :where(table):not(:where([class~="not-prose"] *)) {
-  border-color: #374151; /* gray-700 */
-  box-shadow:
-    0 1px 3px rgb(0 0 0 / 0.3),
-    0 1px 2px rgb(0 0 0 / 0.2);
+/* The scroll happens HERE, not on the table */
+.table-fade-wrap .table-scroll-inner {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
 }
 
-/* Dark mode scrollbar */
-.dark .prose table {
-  scrollbar-color: #374151 transparent;
+.table-fade-wrap .table-scroll-inner::-webkit-scrollbar {
+  height: 5px;
 }
-.dark .prose table::-webkit-scrollbar-thumb {
-  background-color: #374151;
+.table-fade-wrap .table-scroll-inner::-webkit-scrollbar-track {
+  background: transparent;
 }
-.dark .prose table::-webkit-scrollbar-thumb:hover {
-  background-color: #4b5563;
+.table-fade-wrap .table-scroll-inner::-webkit-scrollbar-thumb {
+  background-color: #cbd5e1;
+  border-radius: 99px;
+}
+.table-fade-wrap .table-scroll-inner::-webkit-scrollbar-thumb:hover {
+  background-color: #94a3b8;
+}
+
+/* ── Table resets — back to normal table layout ── */
+.prose .table-fade-wrap table {
+  display: table;        /* NOT block — page won't shift */
+  width: 100%;
+  min-width: 540px;      /* triggers scroll on narrow screens */
+  overflow: visible;     /* wrapper handles overflow */
+  border-radius: 0;
+  border: none;
+  box-shadow: none;
+  margin: 0;
 }
 
 /* ── Sticky header ── */
-.prose thead {
+.prose .table-fade-wrap thead {
   position: sticky;
   top: 0;
   z-index: 1;
 }
 
-/* ── Min-width so scroll kicks in on small screens ── */
-.prose table {
-  min-width: 540px;
-}
-
-/*
-  ── Optional: fade-edge scroll hint ──────────────────────
-  Wraps tables in a position:relative div to show a right-
-  fade when the table overflows. Requires the small script
-  below (or the TableWrapper.astro component).
-  ─────────────────────────────────────────────────────────
-*/
-.table-fade-wrap {
-  position: relative;
-  margin: 1.75rem 0;
-}
-
+/* ── Right-edge fade ── */
 .table-fade-wrap::after {
   content: "";
   pointer-events: none;
@@ -104,10 +74,27 @@
   transition: opacity 0.2s;
 }
 
-.dark .table-fade-wrap::after {
-  background: linear-gradient(to left, #111827 20%, transparent); /* gray-900 */
-}
-
 .table-fade-wrap.is-overflowing::after {
   opacity: 1;
+}
+
+/* ── Dark mode ── */
+.dark .table-fade-wrap {
+  border-color: #374151;
+  box-shadow:
+    0 1px 3px rgb(0 0 0 / 0.3),
+    0 1px 2px rgb(0 0 0 / 0.2);
+}
+
+.dark .table-fade-wrap .table-scroll-inner {
+  scrollbar-color: #374151 transparent;
+}
+.dark .table-fade-wrap .table-scroll-inner::-webkit-scrollbar-thumb {
+  background-color: #374151;
+}
+.dark .table-fade-wrap .table-scroll-inner::-webkit-scrollbar-thumb:hover {
+  background-color: #4b5563;
+}
+.dark .table-fade-wrap::after {
+  background: linear-gradient(to left, #111827 20%, transparent);
 }
