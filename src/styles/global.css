@@ -59,97 +59,99 @@
   }
 
   /* ===== SCROLLABLE TABLES ===== */
-  .prose .table-wrapper,
-  .prose table {
-    display: block;
-    width: 100%;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-  }
+.prose .table-wrapper {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 0.5rem;
+  border: 1px solid #e5e7eb;
+  margin: 1.5rem 0;
+}
 
-  .prose table {
-    border-collapse: collapse;
-    border-spacing: 0;
-    font-size: 0.875rem;
-    line-height: 1.5;
-    border-radius: 0.5rem;
-    border: 1px solid #e5e7eb;
-  }
+.dark .prose .table-wrapper {
+  border-color: #374151;
+}
 
-  .dark .prose table {
-    border-color: #374151;
-  }
+.prose table {
+  width: max-content;
+  min-width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  margin: 0;
+}
 
-  .prose table thead {
-    background-color: #f9fafb;
-  }
+.prose table thead {
+  background-color: #f9fafb;
+}
 
-  .dark .prose table thead {
-    background-color: #1f2937;
-  }
+.dark .prose table thead {
+  background-color: #1f2937;
+}
 
-  .prose table th {
-    font-weight: 600;
-    text-align: left;
-    padding: 0.75rem 1rem;
-    border-bottom: 2px solid #e5e7eb;
-    color: #111827;
-    white-space: nowrap;
-  }
+.prose table th {
+  font-weight: 600;
+  text-align: left;
+  padding: 0.75rem 1rem;
+  border-bottom: 2px solid #e5e7eb;
+  color: #111827;
+  white-space: nowrap;
+}
 
-  .dark .prose table th {
-    border-bottom-color: #374151;
-    color: #f3f4f6;
-  }
+.dark .prose table th {
+  border-bottom-color: #374151;
+  color: #f3f4f6;
+}
 
-  .prose table td {
-    padding: 0.75rem 1rem;
-    border-bottom: 1px solid #f3f4f6;
-    color: #374151;
-    white-space: nowrap;
-  }
+.prose table td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #f3f4f6;
+  color: #374151;
+  white-space: nowrap;
+}
 
-  .dark .prose table td {
-    border-bottom-color: #374151;
-    color: #d1d5db;
-  }
+.dark .prose table td {
+  border-bottom-color: #374151;
+  color: #d1d5db;
+}
 
-  .prose table tbody tr:last-child td {
-    border-bottom: none;
-  }
+.prose table tbody tr:last-child td {
+  border-bottom: none;
+}
 
-  .prose table tbody tr:hover {
-    background-color: #f9fafb;
-  }
+.prose table tbody tr:hover {
+  background-color: #f9fafb;
+}
 
-  .dark .prose table tbody tr:hover {
-    background-color: #1f2937;
-  }
+.dark .prose table tbody tr:hover {
+  background-color: #1f2937;
+}
 
-  /* Scrollbar styling */
-  .prose table::-webkit-scrollbar {
-    height: 8px;
-  }
+/* Scrollbar on the wrapper */
+.prose .table-wrapper::-webkit-scrollbar {
+  height: 8px;
+}
 
-  .prose table::-webkit-scrollbar-track {
-    background: transparent;
-    border-radius: 4px;
-  }
+.prose .table-wrapper::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 4px;
+}
 
-  .prose table::-webkit-scrollbar-thumb {
-    background-color: #d1d5db;
-    border-radius: 4px;
-  }
+.prose .table-wrapper::-webkit-scrollbar-thumb {
+  background-color: #d1d5db;
+  border-radius: 4px;
+}
 
-  .prose table::-webkit-scrollbar-thumb:hover {
-    background-color: #9ca3af;
-  }
+.prose .table-wrapper::-webkit-scrollbar-thumb:hover {
+  background-color: #9ca3af;
+}
 
-  .dark .prose table::-webkit-scrollbar-thumb {
-    background-color: #4b5563;
-  }
+.dark .prose .table-wrapper::-webkit-scrollbar-thumb {
+  background-color: #4b5563;
+}
 
-  .dark .prose table::-webkit-scrollbar-thumb:hover {
-    background-color: #6b7280;
-  }
+.dark .prose .table-wrapper::-webkit-scrollbar-thumb:hover {
+  background-color: #6b7280;
 }
