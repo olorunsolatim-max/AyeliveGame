@@ -37,7 +37,8 @@ export default {
               fontSize: "2rem",
               marginBottom: "0.5em",
               color: theme("colors.gray.900"),
-            },h2: {
+            },
+            h2: {
               fontWeight: "700",
               fontSize: "1.5rem",
               marginTop: "2em",
@@ -118,24 +119,63 @@ export default {
               marginTop: "2em",
               marginBottom: "2em",
             },
+
+            // ── Table: scroll wrapper via CSS, no extra component needed ──
             table: {
+              // Reset prose's default table styles
               width: "100%",
+              minWidth: "540px",          // forces scroll on narrow screens
               borderCollapse: "collapse",
               fontSize: "0.9em",
+              lineHeight: "1.6",
+              display: "table",           // keep as table, wrapper handles scroll
+            },
+            // The scroll container is injected via global CSS (see below)
+            // We style thead/th/td here to match your blue accent theme
+            thead: {
+              borderBottomWidth: "0",     // remove prose default
+            },
+            "thead tr": {
+              backgroundColor: theme("colors.gray.50"),
+              borderBottom: `2px solid ${theme("colors.blue.100")}`,
             },
             th: {
-              backgroundColor: theme("colors.gray.100"),
-              padding: "0.75em 1em",
+              padding: "0.65rem 1rem",
               fontWeight: "600",
+              fontSize: "0.78em",
+              letterSpacing: "0.05em",
+              textTransform: "uppercase",
+              color: theme("colors.gray.500"),
               textAlign: "left",
-              borderBottom: `2px solid ${theme("colors.gray.200")}`,
+              whiteSpace: "nowrap",
+              backgroundColor: theme("colors.gray.50"),
             },
             td: {
-              padding: "0.75em 1em",
+              padding: "0.65rem 1rem",
               borderBottom: `1px solid ${theme("colors.gray.100")}`,
+              color: theme("colors.gray.700"),
+              whiteSpace: "nowrap",
+              verticalAlign: "middle",
+            },
+            "tbody tr": {
+              transition: "background-color 0.12s",
+            },
+            "tbody tr:hover": {
+              backgroundColor: theme("colors.blue.50"),
+            },
+            "tbody tr:last-child td": {
+              borderBottom: "none",
+            },
+            // Zebra stripes
+            "tbody tr:nth-child(even)": {
+              backgroundColor: theme("colors.gray.50"),
+            },
+            "tbody tr:nth-child(even):hover": {
+              backgroundColor: theme("colors.blue.50"),
             },
           },
         },
+
         invert: {
           css: {
             color: theme("colors.gray.300"),
@@ -160,11 +200,29 @@ export default {
               "&:hover": { color: theme("colors.blue.300") },
             },
             hr: { borderColor: theme("colors.gray.700") },
+
+            // Dark mode table overrides
+            "thead tr": {
+              backgroundColor: theme("colors.gray.800"),
+              borderBottomColor: theme("colors.blue.900"),
+            },
             th: {
               backgroundColor: theme("colors.gray.800"),
-              borderBottomColor: theme("colors.gray.700"),
+              color: theme("colors.gray.400"),
             },
-            td: { borderBottomColor: theme("colors.gray.800") },
+            td: {
+              borderBottomColor: theme("colors.gray.800"),
+              color: theme("colors.gray.300"),
+            },
+            "tbody tr:hover": {
+              backgroundColor: theme("colors.blue.950") + "66",
+            },
+            "tbody tr:nth-child(even)": {
+              backgroundColor: theme("colors.gray.800") + "66",
+            },
+            "tbody tr:nth-child(even):hover": {
+              backgroundColor: theme("colors.blue.950") + "66",
+            },
           },
         },
       }),
